@@ -1,0 +1,78 @@
+@import '../perfil/perfil.page.scss';
+//  @import '../../components/tarea/tarea.component.scss';
+
+
+
+  .gold{
+    color: #FFD700;
+  }
+
+  .silver{
+    color: #C0C0C0;
+  }
+
+  .bronze{
+    color: #CD7F32;
+  }
+
+
+
+    .nombreRanking{
+      margin-left: 27px;
+      font-weight: 500;
+
+    }
+
+    .posicionRanking{
+      font-weight: 800;
+      font-size: x-large;
+      margin-left: 13px;
+    }
+
+    .puntosRanking{
+      font-weight: 700;
+    }
+
+    .close-button{
+      --box-shadow: none !important;
+    }
+
+
+    ion-modal#modal-unirse {
+      --height: 70%;
+      --border-radius: 16px;
+      --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+
+    }
+
+    ion-modal#modal-crear {
+      --height: 40%;
+      --border-radius: 16px;
+      --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+
+    ion-modal#modal-meter {
+      --height: 70%;
+      --border-radius: 16px;
+      --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+
+
+    
+    
+    ion-modal::part(backdrop) {
+      background: rgba(209, 213, 219);
+      opacity: 1;
+    }
+    
+
+
+
+    .clasificacion ion-item{
+
+      --background:rgb(225, 225, 225);
+  
+  }

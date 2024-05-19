@@ -1,0 +1,36 @@
+ion-grid {
+    height: 100%;
+    justify-content: center;
+}
+
+
+.distance{
+    margin: 10px 0;
+  }
+
+  .titulo-login{
+    margin: 8%;
+    text-align: center;
+    font-size: 120%;
+    border-radius: 50px;
+    max-width: 40%;
+    margin: 5% auto;
+  }
+
+  .google{
+    font-size: xx-large;
+    --border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .errormessage{
+    color: rgb(201, 11, 11);
+  }

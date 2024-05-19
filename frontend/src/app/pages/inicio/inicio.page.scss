@@ -1,0 +1,62 @@
+// ion-segment-button::part(indicator-background) {
+//     background: #898e8b;
+//   }
+  
+
+  
+  /* iOS styles */
+  // ion-segment-button.ios::part(native) {
+  //   color: white;
+  // }
+  
+  // .segment-button-checked.ios::part(native) {
+  //   color: #fff;
+  // }
+  
+
+
+
+  .header-hidden {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-out;
+  }
+
+  .header-shown {
+    transform: translateY(0);
+    transition: transform 0.3s ease-in;
+  }
+  
+
+
+  ion-segment-button{
+    --width: 5px;
+  }
+  
+  ion-segment-button{
+    min-width: auto;
+  font-size: 10px;
+
+  }
+
+  ion-segment-button.ios::part(indicator-background) {
+    border-radius: 20px;
+  }
+
+  ion-segment-button{
+    --width: 5px;
+
+  }
+  .segment-inicio-DERECHO{
+
+    margin: 0 3% 2% 3% ;
+  
+    }
+  
+  .segment-inicio-IZQUIERDO{
+
+  margin: 0 0 2% 3% ;
+
+  }
+
+  
+

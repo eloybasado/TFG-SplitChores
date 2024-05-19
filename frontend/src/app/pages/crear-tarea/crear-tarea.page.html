@@ -1,0 +1,198 @@
+
+
+<ion-content [fullscreen]="true">
+
+  
+  <div class="flexed">
+    <ion-back-button class="elemento2" defaultHref="/usuario/tareas"></ion-back-button>
+    <h3 class="titulo titulo-especial">
+      {{ editando ? 'Editar Tarea' : 'Crear Tarea' }}
+    </h3>
+  </div>
+
+  <div class="tarea-form" >
+
+    <form [formGroup]="tareaForm">
+
+  <ion-item lines="none" *ngIf="editando===false" >
+  <ion-segment  value=false  mode="ios" (ionChange)="onToggleChange()" class="segment-container">
+    <ion-segment-button value=false checked>
+      <ion-label>Única</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value=true>
+      <ion-label>Recurrente</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </ion-item>
+
+   
+      
+        <ion-item lines="none" class="code-input">
+            <!-- <ion-label position="floating">Nombre</ion-label> -->
+            <ion-input id="nombre" mode="md" label="Nombre" label-placement="floating"  type="text" [clearInput]="true" [counter]="true" placeholder="Introduce el nombre"  formControlName="nombre" maxlength="20"  required></ion-input>
+          </ion-item>
+      
+          
+          <ion-item  *ngIf="toggleActivado===false" class="code-input distance" lines="none" >
+            <p style="font-size: large;" id="fechaLimite">Fecha Límite</p>
+            <ion-datetime-button  color="success" datetime="datetime"  ></ion-datetime-button>
+           
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime  presentation="date" id="datetime" min="{{ fechaMinima }}" max="2027-05-31T23:59:59" formControlName="fechaLimite" color="primary"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+
+          <ion-item class="code-input distance" id="dificultad" lines="none" >
+                <ion-select  mode="ios" interface="action-sheet" label="Selecciona una dificultad" class="frecuenciaInput" formControlName="dificultad"  fill="solid">
+                  <ion-select-option value="facil">Fácil</ion-select-option>
+                  <ion-select-option value="media">Media</ion-select-option>
+                  <ion-select-option value="dificil">Difícil</ion-select-option>
+                </ion-select>
+          </ion-item>
+
+          <ion-item class="code-input distance" lines="none" >
+            <ion-textarea label="Descripción" label-placement="floating" rows="1" auto-grow="true" maxlength="200"   formControlName="descripcion"></ion-textarea>
+          </ion-item>
+
+          <!-- <ion-item *ngIf="editando===false" class="code-input distance" lines="none">
+            <ion-toggle color="success" style="font-size: large;" [(ngModel)]="toggleActivado" (onChange)="onToggleChange()" formControlName="recurrente">Tarea recurrente</ion-toggle>
+          </ion-item> -->
+
+          <ion-item *ngIf="toggleActivado===true" id="frecuenciaSelect" class="code-input distance" lines="none" >
+            <ion-select mode="ios"  interface="action-sheet" label="Selecciona la frecuencia" class="frecuenciaInput" formControlName="frecuenciaSelect" (ionChange)="onFrecuenciaChange($event)"  fill="solid">
+              <ion-select-option value="laboral">Lunes a Viernes</ion-select-option>
+              <ion-select-option value="semanal">1 día a la semana</ion-select-option>
+              <ion-select-option value="semanal-variado">Elegir días de la semana</ion-select-option>
+              <ion-select-option value="frecuencia">Elegir frecuencia</ion-select-option>
+            </ion-select>
+      </ion-item>
+      <div class="flexed">
+      <ion-segment *ngIf="selectedFrecuencia==='semanal'" value="lunes" mode="ios" (ionChange)="onDaySelected($event)" class="segment-container">
+        <ion-segment-button value="lunes">
+          L
+        </ion-segment-button>
+        <ion-segment-button value="martes">
+          M
+        </ion-segment-button>
+        <ion-segment-button value="miércoles">
+          X
+        </ion-segment-button>
+        <ion-segment-button value="jueves">
+          J
+        </ion-segment-button>
+        <ion-segment-button value="viernes">
+          V
+        </ion-segment-button>
+        <ion-segment-button value="sábado">
+          S
+        </ion-segment-button>
+        <ion-segment-button value="domingo">
+          D
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+      <div class="flexed" *ngIf="selectedFrecuencia==='semanal-variado'">
+        <ion-button class="day-button" (click)="toggleDay('lunes')" [color]="isDaySelected('lunes') ? 'success' : 'medium'">L</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('martes')" [color]="isDaySelected('martes') ? 'success' : 'medium'">M</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('miércoles')" [color]="isDaySelected('miércoles') ? 'success' : 'medium'">X</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('jueves')" [color]="isDaySelected('jueves') ? 'success' : 'medium'">J</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('viernes')" [color]="isDaySelected('viernes') ? 'success' : 'medium'">V</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('sábado')" [color]="isDaySelected('sábado') ? 'success' : 'medium'">S</ion-button>
+        <ion-button class="day-button" (click)="toggleDay('domingo')" [color]="isDaySelected('domingo') ? 'success' : 'medium'">D</ion-button>
+      </div>
+      
+      
+
+          <ion-item *ngIf="toggleActivado===true && selectedFrecuencia==='frecuencia'" class="code-input distance" lines="none">
+            <ion-label position="floating">¿Cada cuántos días se realiza? </ion-label>
+            <ion-input type="number"  min="1" formControlName="frecuencia" ></ion-input>
+
+          </ion-item>
+          <div class="frecuencia " *ngIf="selectedFrecuencia==='frecuencia'">
+          <ion-button class="boton-dias" *ngIf="toggleActivado===true" expand="block" color="success" ><ion-icon name="add"></ion-icon></ion-button>
+          <ion-button class="boton-dias" *ngIf="toggleActivado===true"  expand="block"  color="danger" ><ion-icon name="remove"></ion-icon></ion-button>
+          </div>
+          
+          <ion-label *ngIf="toggleActivado===true && rotacionArray.controls.length>0 && editando===false" >¿En qué orden? </ion-label>
+          <ion-label *ngIf="toggleActivado===true && rotacionArray.controls.length<1 && editando===false" id="error-rotacion" >Debe haber almenos 1 persona en rotación</ion-label>
+         
+         
+         
+          <ion-list [inset]="true" *ngIf="toggleActivado===true && editando===false" class="rotacion" >
+            <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))" formArrayName="rotacion">
+              <!-- <ion-reorder>
+                <ion-chip>
+                  <ion-avatar>
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>Avatar 1</ion-label>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ion-chip>
+              </ion-reorder> -->
+           
+                <!-- <ion-reorder *ngIf="rotacionArray.length > 1">1</ion-reorder> -->
+                <ion-item class="reorder-item" lines="none" *ngFor="let elemento of rotacionArray.controls; let i = index">
+                  <ion-reorder  >
+                    <ion-text>{{i+1}}</ion-text>
+                  <ion-chip>
+                    <ion-avatar>
+                      <img alt="Silhouette of a person's head" src="{{elemento.get('avatar')?.value}}" />
+                    </ion-avatar>
+                    <ion-label>{{elemento.get('nombre')?.value}}</ion-label>
+  
+                  </ion-chip>
+  
+                </ion-reorder>
+
+                
+              <ion-button (click)="sacarUsuario(elemento.get('id')?.value)" fill="clear">
+                <ion-icon name="trash" color="danger"></ion-icon>
+              </ion-button>
+                </ion-item>
+
+
+
+
+
+          
+
+            </ion-reorder-group>
+
+
+          </ion-list>
+
+        <div class="contenedor">
+          <div class="rotacion apaisado">
+            <div *ngFor="let elemento of usuariosNoRotacion.controls; let i = index" class="elemento">
+              <ion-chip class="reorder-item" *ngIf="toggleActivado===true" lines="none">
+                <ion-avatar>
+                  <img alt="Silhouette of a person's head" [src]="elemento.get('avatar')?.value" />
+                </ion-avatar>
+                <ion-label>{{elemento.get('nombre')?.value}}</ion-label>
+              </ion-chip>
+              <ion-button (click)="meterUsuario(elemento.get('id')?.value)" fill="clear">
+                <ion-icon name="add" color="success"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+     
+            <div class="flexed">
+              <ion-button mode="ios" class="animated color-button" shape="round"
+              *ngFor="let color of presetColors" 
+              [color]="color"
+                [style.transform]="color === selectedColor ? 'scale(1)' : 'scale(0.6)'"
+                (click)="selectColor(color)"><ion-icon *ngIf="color===selectedColor" name="checkmark" style="position: absolute;" ></ion-icon>
+              </ion-button>
+            </div>
+ 
+          <ion-button expand="block" type="submit"  color="success" (click)="crearTarea()" >Terminar</ion-button>  
+
+        </form>
+
+      
+
+      </div>
+</ion-content>

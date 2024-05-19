@@ -1,0 +1,80 @@
+<ion-content class="ion-padding" [fullscreen]="true">
+  <form [formGroup]="registerForm">
+  <h3 class="titulo-registro ">Registro</h3>
+
+    <ion-item lines="none" class="code-input"> 
+    <!-- <ion-label position="floating">Nombre</ion-label> -->
+    <ion-input label="Nombre" label-placement="floating" type="text" formControlName="nombre" required maxlength=10   [counter]="true" ></ion-input>
+    </ion-item> 
+    <ion-item lines="none" class="code-input distance"> 
+    <!-- <ion-label position="floating">Apellidos</ion-label> -->
+    <ion-input label="Apellidos" label-placement="floating" type="text"  formControlName="apellidos" maxlength=10   [counter]="true" required></ion-input>
+    </ion-item>
+    <ion-item lines="none" class="code-input distance"> 
+      <!-- <ion-label position="floating">Correo electrónico</ion-label> -->
+      <ion-input label="Correo electrónico" label-placement="floating" type="email"   errorText="email no válido" ngModel email formControlName="email"  required placeholder="email@dominio.com"></ion-input>
+    </ion-item>
+    <ion-item lines="none" class="code-input distance">
+      <!-- <ion-label position="floating">Contraseña</ion-label> -->
+      <ion-input type="password" id="passwordInput" labelPlacement="stacked" minlength=8 errorText="Escribe almenos 8 caracteres"  label="Contraseña" placeholder="Introduce la contraseña" formControlName="password" required>
+        <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility('passwordInput')">
+          <ion-icon slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+        </ion-button>
+      </ion-input>
+    </ion-item>
+    <ion-item lines="none" class="code-input distance">
+      <!-- <ion-label position="floating">Repetir Contraseña</ion-label> -->
+      <ion-input type="password"  id="passwordInput2" labelPlacement="stacked" label="Repetir Contraseña" placeholder="Repite la contraseña"  formControlName="password2" required>
+        <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility('passwordInput2')">
+          <ion-icon slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+        </ion-button>
+      </ion-input>
+    </ion-item>
+    <ion-item lines="none" class="code-input distance">
+      Fecha de Nacimiento
+      <ion-datetime-button  datetime="datetime"></ion-datetime-button>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime formControlName="fecNacimiento" presentation="date" id="datetime" max="{{fechaMax}}"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+  <div class="ion-text-center ">
+    <ion-text>Sexo</ion-text>
+    <ion-item lines="none" class="code-input distance">
+
+        <ion-radio-group class="sex" formControlName="sexo">
+          <!-- <ion-button>
+            <ion-label>Masculino</ion-label>
+            <ion-radio value="HOMBRE"></ion-radio>
+          </ion-button>
+          <ion-button>
+            <ion-label>Femenino</ion-label>
+            <ion-radio value="MUJER"></ion-radio>
+          </ion-button> -->
+
+          <ion-radio value="custom" value="HOMBRE">Masculino</ion-radio>
+          <ion-radio value="custom-checked" value="MUJER">Femenino</ion-radio>
+        </ion-radio-group>
+
+      </ion-item>
+
+    
+  </div>
+
+    <ion-button expand="block" type="submit" (click)="register()" color="success">Continuar</ion-button>
+ 
+
+  <div class="ion-text-center ion-padding-top">
+    <p style="color: red;">{{mensaje}}</p>
+  </div>
+  </form>
+
+  <div class="ion-text-center ion-padding-top">
+    <p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia Sesión</a></p>
+  </div>
+
+</ion-content>

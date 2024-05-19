@@ -1,0 +1,32 @@
+ion-button{
+    --margin:100px;
+}
+
+.crear-tarea{
+    margin: 0 8%;
+}
+
+.custom-button{
+    color: white;
+}
+
+.botonize:active{
+    color: rgb(109, 108, 104);
+}
+
+
+.swiper-image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+swiper-slide{
+    margin-bottom: 23px;
+}
+
+
+.swiper-image img{
+    border-radius: 20px;
+}
+

@@ -1,0 +1,30 @@
+<ion-content class="ion-padding">
+  <form [formGroup]="loginForm">
+    <h3 class="titulo-login ">Iniciar Sesión</h3>
+
+
+    <ion-item lines="none" class="code-input"> 
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input mode="md" type="email"  formControlName="email" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="none" class="code-input distance">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input mode="md" type="password"  formControlName="password" required></ion-input>
+      
+    </ion-item>
+  <div class="ion-text-center ion-padding-top">
+    <ion-checkbox  formControlName="remember">Recuérdame</ion-checkbox>
+    <p>¿Olvidaste tu contraseña? <a routerLink="/registro">Recuperar</a></p>
+  </div>
+
+    <ion-button expand="block" type="submit" (click)="login()" color="success">Continuar</ion-button>
+    <div class="ion-text-center ion-padding-top">
+      <p class="errormessage">{{mensaje}}</p>
+    </div>
+  </form>
+  <div class="ion-text-center ion-padding-top">
+    <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
+  </div>
+
+</ion-content>

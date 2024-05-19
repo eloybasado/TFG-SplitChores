@@ -1,0 +1,120 @@
+
+<ion-content [fullscreen]="true">
+ 
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h3 class="titulo botonize" (click)="recargarTareas()">Tareas </h3> 
+
+  <!-- <ion-button href="/usuario/tareas/crear-tarea" expand="block" class="crear-tarea" color="medium">CREAR TAREA<ion-icon slot="end" name="create-outline"></ion-icon></ion-button> -->
+
+  <div *ngIf="subordinado===false">
+
+  <h3 class="titulo botonize" (click)="toggleAccordion()">
+    {{ selectedOption }} <ion-icon name="chevron-down-outline"></ion-icon>
+  </h3>
+  <ion-select #mySelect style="display: none;" (ionChange)="updateSelectedOption($event.detail.value)" >
+    <div slot="label">¿De quién quieres gestionar tareas?</div>
+    <ion-select-option value="yo">Yo</ion-select-option>
+    <ion-select-option *ngFor="let subordinado of usuariosSubordinados; let i = index" value="{{subordinado.nombre}}">{{subordinado.nombre}}</ion-select-option>
+  </ion-select>
+  </div>
+
+
+    <h3  *ngIf="subordinado===true" class="titulo">Tus Tareas</h3>
+    <h3 class="mensaje404 errormessage" *ngIf="tareasElegidas.length===0 && subordinado!==true" >¡No tienes tareas! Elige una</h3>
+    <h3 class="mensaje404 errormessage" *ngIf="tareasElegidas.length===0 && subordinado===true" >¡No tienes tareas!</h3>
+    <img *ngIf="tareasElegidas.length===0" src="../../../assets/messages/otter.png" class="error" alt="Imagen de error 404">
+
+
+  <app-tarea (liberarTarea)="recargarTareas($event)"  (escogerTarea)="recargarTareas($event)"  *ngFor="let tarea of tareasElegidas" (recargarTareas)="recargarTareas()" [tarea]="tarea" >
+  </app-tarea>
+  <div *ngIf="subordinado===false">
+  <h3 class="titulo">{{ selectedOptionEscoger }}</h3>
+  <h3 class="mensaje404 errormessage" *ngIf="tareasSinElegir.length===0"  >¡No hay tareas! Crea una</h3>
+  <img *ngIf="tareasSinElegir.length===0"  src="../../../assets/messages/chibi-kitten.png" class="error" alt="Imagen de error 404">
+
+  <app-tarea *ngFor="let tarea of tareasSinElegir" (recargarTareas)="recargarTareas()" [tarea]="tarea" [sinElegir]="true">
+    
+  </app-tarea>
+</div>
+<!-- 
+  <ion-infinite-scroll (ionInfinite)="cargarMasTareasSinElegir($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más tareas..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+
+  <ion-toast *ngIf="notificaciones"
+    [isOpen]="isToastOpen"
+    position="top"
+    positionAnchor="header"
+    [message]="mensaje"
+    duration="1000"
+    (didDismiss)="cerrarNotificacion(0)"
+    [icon]="icon"
+    [color]="color"
+  ></ion-toast>
+
+  <ion-fab *ngIf="subordinado===false" slot="fixed" vertical="bottom" horizontal="end" >
+    <!-- <ion-fab-button (routerLink="/usuario/tareas/crear-tarea")> -->
+    <ion-fab-button color="success" (click)="toCreate()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal id="modal-tutorial" [isOpen]="tutorial" class="transparente" backdropDismiss="false"  >
+    <ng-template>
+      <ion-content class="ion-padding transparente">
+          <swiper-container  #swiper effect="cards"  pagination-dynamic-bullets="true">
+
+
+            <swiper-slide class="sj" >
+            
+              
+                <div class="swiper-image">
+                  <img  src="../../../assets/tutorial/tareas.png" alt="Imagen 1">
+                </div>
+            </swiper-slide>
+            <swiper-slide class="sj">
+    
+                <div class="swiper-image">
+                  <img  src="../../../assets/tutorial/tarea.png" alt="Imagen 2">
+                </div>
+            </swiper-slide>
+    
+            <swiper-slide class="sj" >
+    
+              <div class="swiper-image">
+                <img  src="../../../assets/tutorial/slide.png" alt="Imagen 2">
+              </div>
+          </swiper-slide>
+    
+          <swiper-slide class="sj" >
+    
+            <div class="swiper-image">
+              <img  src="../../../assets/tutorial/grupos.png" alt="Imagen 2">
+            </div>
+        </swiper-slide>
+        <swiper-slide class="sj" >
+    
+          <div class="swiper-image">
+            <img  src="../../../assets/tutorial/perfil.png" alt="Imagen 2">
+          </div>
+      </swiper-slide>
+            </swiper-container>
+
+
+      </ion-content>
+      <ion-fab  slot="fixed" vertical="bottom" horizontal="end" >
+        <ion-fab-button color="success" (click)="triggerActionSheet('tutorial')">
+          <ion-icon name="checkmark"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-action-sheet  header="¿Deseas salir el grupo?" [buttons]="tutorialDialog" ></ion-action-sheet>
+    </ng-template>
+
+  </ion-modal>
+
+</ion-content>
+

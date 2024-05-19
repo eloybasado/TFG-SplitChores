@@ -1,0 +1,269 @@
+<!-- 
+<ion-header>
+  <h3 class="titulo">Perfil</h3>
+</ion-header> -->
+<ion-content [fullscreen]="true">
+  <h3 class="titulo">Perfil</h3>
+  <ion-refresher slot="fixed" [pullFactor]="0.8" [pullMin]="150" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="contenedor-foto">
+  <ion-img class="foto-perfil" 
+  src="{{avatar}}"
+  alt="The Wisconsin State Capitol building in Madison, WI at night"
+></ion-img>
+<!-- bloque de foto -->
+<ion-button  class="image-button" size="small" color="medium" (click)="setOpen(true,3)" ><ion-icon  slot="icon-only" name="pencil" class="button-icon"></ion-icon></ion-button>
+</div>
+
+<!-- apellidos, nombre, email y sexo -->
+<form class="form" [formGroup]="usuarioForm">
+  <ion-item lines="none" class="code-input">
+<!-- <ion-label position="floating">Nombre</ion-label> -->
+<ion-input label="Nombre" label-placement="floating" type="text" required placeholder="Introduce tu nombre" maxlength=10 formControlName="nombre"></ion-input>
+</ion-item>
+<ion-item lines="none" class="code-input distance">
+<!-- <ion-label position="floating" >Apellidos</ion-label> -->
+<ion-input label="Apellidos" label-placement="floating" type="text" required placeholder="Introduce tus apellidos" formControlName="apellidos"></ion-input>
+</ion-item>
+<ion-button expand="block" type="submit"  color="success" (click)="actualizarNombre()">Actualizar</ion-button>
+
+</form>
+
+<!-- Usuarios subordinados con capsulas-->
+<h3 class="usuario-titulo" *ngIf="rol!=='SUBORDINADO' && subordinados.length>0">Usuarios a tu cargo</h3>
+
+
+  <ion-list *ngFor="let usuario of subordinados" class="lista-subordinados">
+    <ion-item-sliding>
+      <ion-item [button]="true" detail="true">
+        <ion-avatar aria-hidden="true" slot="start">
+          <img alt="Silhouette of a person's head" [src]="usuario.avatar ? usuario.avatar : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />s
+        </ion-avatar>
+        <ion-label>{{usuario.nombre}}</ion-label>
+      </ion-item>
+      <ion-item-options slot="end">
+        <ion-item-option color="tertiary" (click)="enviarNotificacion(usuario.uid)">
+          <ion-icon slot="icon-only" name="notifications"></ion-icon>
+        </ion-item-option>
+        <ion-item-option  id="liberar-usuario{{usuario.uid}}" color="danger" >
+          <ion-icon slot="icon-only" name="person-remove" ></ion-icon>
+        </ion-item-option>
+        <ion-action-sheet trigger="liberar-usuario{{usuario.uid}}" header="¿Deseas independizar a {{usuario.nombre}}?" mode="ios" [buttons]="freeDialog" (ionActionSheetDidDismiss)="onActionSheetDismiss($event,usuario.uid)"></ion-action-sheet>
+
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> 
+
+<ion-button id="open-modal" (click)="setOpen(true,1)" *ngIf="rol!=='SUBORDINADO'" color="secondary" expand="block">Añadir usuario gestionado  <ion-icon  name="person-add" slot="end"></ion-icon></ion-button>
+
+
+<!-- boton de ir a cambiar contrasenya -->
+<ion-button color="primary" expand="block" (click)="setOpen(true,4)">
+  Cambiar Contraseña
+  <ion-icon slot="end" name="lock-closed"></ion-icon>
+</ion-button>
+<ion-button color="danger" expand="block" (click)="setOpen(true,2)" *ngIf="rol!=='SUBORDINADO' && subordinados.length<1">
+  Convertirse en gestionado
+  <ion-icon slot="end" name="people"></ion-icon>
+</ion-button>
+
+
+
+<ion-modal id="modal-nuevo" [isOpen]="isModalOpen"  backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,1)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar class="modal-toolbar">
+        <ion-title>Gestionar usuario</ion-title>
+        <ion-buttons slot="end" class="close-button">
+          <ion-button (click)="setOpen(false,1)" color="primary">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <p class="instrucciones">
+        1-En el teléfono de la persona que quieres convertir en gestionada:
+      </p>
+    <br>
+      <p class="instrucciones centrado">
+
+      [Perfil] -> [Convertirse en gestionado].
+      </p>
+    <br>
+      <p class="instrucciones">
+        2-Muestrale este código e introdúcelo.
+      </p>
+    <br>
+      <p class="instrucciones">
+        3-No cierres esta ventana hasta que hayas introducido el código y se complete el proceso.
+    </p>
+      <p class="codigo-grupo">
+          {{codigo}}
+      </p>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+<ion-modal id="modal-conversion" [isOpen]="isModalTypeOpen" backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,2)" >
+  <ng-template>
+    <ion-header >
+      <ion-toolbar class="modal-toolbar">
+        <ion-title style="font-size: large;">Convertirse en gestionado</ion-title>
+        <ion-buttons slot="end" class="close-button">
+          <ion-button (click)="setOpen(false,2)" color="primary">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding ">
+      <p class="instrucciones">
+        1-En el teléfono de la persona que va a ser el gestor
+      </p>
+    <br>
+      <p class="instrucciones">
+      [Perfil] -> [Añadir usuario gestionado].
+      </p>
+      <br>
+      <p class="instrucciones">
+        2-Introduce aquí el código que aparece.
+      </p>
+    <br>
+      <p class="instrucciones">
+        3-No cierres esta ventana hasta que hayas introducido el código y se complete el proceso.
+    </p>
+      <ion-card-content>
+        <form [formGroup]="codigoForm">
+     
+        
+          <ion-item lines="none" class="code-input" >
+              <!-- <ion-label position="floating">Código</ion-label> -->
+              <ion-input  label="Código" label-placement="floating" type="text"  formControlName="codigo"  required ></ion-input>
+            </ion-item>
+        
+            
+  
+            <ion-button expand="block" type="submit"  color="success" (click)="convertirUsuario()">Terminar</ion-button>
+        
+          </form>
+  
+        
+      </ion-card-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+<ion-modal id="modal-foto" [isOpen]="isModalPhotoOpen" class="transparente"  backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,3)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar class="modal-toolbar">
+        <ion-title>Elige un avatar</ion-title>
+        <ion-buttons slot="end" class="close-button">
+          <ion-button (click)="setOpen(false,3)" color="primary">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding transparente">
+      <p class="instrucciones deslizar">
+        Desliza para ver los avatares
+      </p>
+      <swiper-container  #swiper crossFade=true effect="coverflow" depth=300 stretch=0 pagination="true" pagination-dynamic-bullets="true">
+
+
+        <swiper-slide class="sj" >
+        
+          
+            <div class="swiper-image">
+              <img  src="../../../assets/imagenes/hamster.jpeg" alt="Imagen 1">
+            </div>
+        </swiper-slide>
+        <swiper-slide class="sj">
+
+            <div class="swiper-image">
+              <img  src="../../../assets/imagenes/penguin.jpeg" alt="Imagen 2">
+            </div>
+        </swiper-slide>
+
+        <swiper-slide class="sj" >
+
+          <div class="swiper-image">
+            <img  src="../../../assets/imagenes/cat.jpeg" alt="Imagen 2">
+          </div>
+      </swiper-slide>
+
+      <swiper-slide class="sj" >
+
+        <div class="swiper-image">
+          <img  src="../../../assets/imagenes/otter.jpeg" alt="Imagen 2">
+        </div>
+    </swiper-slide>
+        </swiper-container>
+
+        <ion-button (click)="seleccionarAvatar(swiper)" expand="block"color="success">Actualizar</ion-button>
+      
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal id="modal-cambiar-password" [isOpen]="isModalPasswordOpen" backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,4)"> 
+  <ng-template>
+    <ion-header >
+      <ion-toolbar class="modal-toolbar">
+        <ion-title>Cambiar contraseña</ion-title>
+        <ion-buttons slot="end" class="close-button">
+          <ion-button (click)="setOpen(false,4)" color="primary">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" overflow-scroll="false">
+      <ion-card-content overflow-scroll="false">
+        <form [formGroup]="passwordForm">
+     
+        
+            <ion-item lines="none" class="code-input distance" >
+              <ion-input  label="Contraseña actual" type="password" id="passwordInput1" label-placement="floating"    formControlName="password"  required >
+                <ion-button class="eye" fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility('passwordInput1')">
+                  <ion-icon  slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+                </ion-button>
+              </ion-input>
+            </ion-item>
+            <ion-item lines="none" class="code-input distance" >
+              <ion-input label="Nueva contraseña" type="password" id="passwordInput2" label-placement="floating" minlength=8 errorText="Escribe almenos 8 caracteres"  formControlName="newpassword"  required >
+                <ion-button class="eye" fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility('passwordInput2')">
+                  <ion-icon  slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+                </ion-button>
+              </ion-input>
+
+            </ion-item>
+            <ion-item lines="none" class="code-input" >
+              <ion-input label="Repite la nueva contraseña" type="password" id="passwordInput3" label-placement="floating" minlength=8 errorText="Escribe almenos 8 caracteres"  formControlName="newpassword2" required >
+                <ion-button class="eye" fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility('passwordInput3')" >
+                  <ion-icon  slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+                </ion-button>
+              </ion-input>
+
+            </ion-item>
+            <ion-button expand="block" type="submit"  color="success" (click)="cambiarPassword()">Terminar</ion-button>
+            <div class="ion-text-center ion-padding-top">
+              <p style="color: red;">{{mensaje}}</p>
+            </div>
+          </form>
+  
+        
+      </ion-card-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-toast *ngIf="notificaciones"
+[isOpen]="isToastOpen"
+position="top"
+positionAnchor="header"
+[message]="mensaje"
+duration="1000"
+(didDismiss)="cerrarNotificacion(0)"
+[icon]="icon"
+[color]="color"
+></ion-toast>
+</ion-content>

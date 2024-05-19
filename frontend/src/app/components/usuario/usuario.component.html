@@ -1,0 +1,33 @@
+
+  <ion-chip  class="spaced"  [disabled]="changeAdmin===true && usuario.rol==='SUBORDINADO'" >
+    <div class="flexed2">
+    <ion-avatar>
+      <img alt="Silhouette of a person's head" [src]="usuario.avatar ? usuario.avatar : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+    </ion-avatar>
+    <ion-label class="name">{{ usuario.nombre}}</ion-label>
+    </div>  
+    <div class="flexed chip ">
+      <ion-button *ngIf="usuario.rol!=='SUBORDINADO' && changeAdmin!==true" expand="block" color="danger" size="small" class="tiny-button expansor" (click)="openActionSheet()">
+        Echar del grupo
+        <ion-icon slot="end" name="exit"></ion-icon>
+      </ion-button>
+      <ion-action-sheet id="actionSheet" header="¿Deseas eliminar el grupo?" mode="ios" [buttons]="deleteDialog"></ion-action-sheet>
+      
+      <ion-button *ngIf="changeAdmin!==true"  color="success" size="small" class="tiny-button expansor" expand="block" >
+        Notificar Tareas
+        <ion-icon slot="end" name="notifications"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="changeAdmin===true" [disabled]="usuario.rol==='SUBORDINADO'"  color="success" size="small" class="tiny-button expansor" expand="block" (click)="botonHacerAdmin(usuario.uid)" >
+        Hacer Admin
+        <ion-icon slot="end" name="person"></ion-icon>
+      </ion-button>
+    <ion-button *ngIf="usuario.rol==='SUBORDINADO' && perfil" (click)="liberarUsuarioComponente()" color="danger" size="small" class="tiny-button expansor" expand="block">
+      Hacer independiente
+      <ion-icon slot="end" name="person"></ion-icon>
+    </ion-button>
+
+    </div>
+  </ion-chip>
+
+  

@@ -1,0 +1,52 @@
+
+<ion-header [ngClass]="{'header-hidden': scrollDirection === 'down', 'header-shown': scrollDirection==='up'}">
+  <h3 class="titulo" (click)="scrollToTop()">Historial</h3>
+</ion-header>
+<ion-content [fullscreen]="true" (ionScroll)="onScroll($event)" scrollEvents="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)"  [pullFactor]="0.8" [pullMin]="150">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+ 
+  <ion-searchbar mode="ios" #searchBar [debounce]="1000" *ngIf="tareas.length!==0 || searchBar" (ionInput)="searchItems($event)" (ionClear)="limpiarTexto()"></ion-searchbar>
+  <div class="flexed">
+  <ion-segment value="grupo" mode="ios" class="segment-inicio-IZQUIERDO" *ngIf="(tareas.length!==0 || searchBar) && tipoGrupo!==1 " (ionChange)="onFilterSelected($event)">
+    <ion-segment-button value="grupo">
+      <ion-label>GRUPO</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="personal">
+      <ion-label>PERSONAL</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment value="todas"  mode="ios" class="segment-inicio-DERECHO" *ngIf="tareas.length!==0 || searchBar" (ionChange)="onFilterSelected($event)" >
+    <ion-segment-button value="completada">
+      <ion-icon name="checkmark-done"  color="success"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="fallida">
+      <ion-icon name="close"  color="danger"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="todas">
+      <ion-label>AMBAS</ion-label>
+
+    </ion-segment-button>
+  </ion-segment>
+  </div>
+  <app-tarea *ngFor="let tarea of tareas" [tarea]="tarea" [usuario]="(obtenerNombreUsuario(tarea.elegida) | async)"  [usuarioChip]="true">
+    
+  </app-tarea>
+
+
+  <h3 class="mensaje404 errormessage" *ngIf="tareas.length===0" >¡No hay tareas completadas por ahora!</h3>
+  <img *ngIf="tareas.length===0" src="../../../assets/messages/chibi-kitten-table.png" class="error" alt="Imagen de error 404">
+
+
+  <ion-infinite-scroll *ngIf="tareas.length!==0" (ionInfinite)="cargarMas($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más tareas..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!-- <ion-button (click)="cargarMas()" expand="block">cargar más</ion-button> -->
+
+
+</ion-content>
+

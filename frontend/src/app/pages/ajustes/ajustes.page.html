@@ -1,0 +1,96 @@
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <h3 class="titulo">Ajustes</h3>
+  <ion-list [inset]="true" class="lista" mode="ios">
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="language" slot="start"></ion-icon>
+        Idioma
+      </ion-item>
+     
+      <ion-item-options >
+        <ion-item-option>Español</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="invert-mode" slot="start"></ion-icon>
+        Modo oscuro
+      </ion-item>
+
+      <ion-item-options >
+        <ion-item-option>Próximamente</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="notifications" slot="start"></ion-icon>
+        Notificaciones
+      </ion-item>
+
+      <ion-item-options >
+        <ion-item-option>Activadas</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="book" slot="start"></ion-icon>
+        Legal
+      </ion-item>
+
+      <ion-item-options >
+        <ion-item-option>Leer</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="shield-checkmark" slot="start"></ion-icon>
+        Soporte
+      </ion-item>
+
+      <ion-item-options >
+        <ion-item-option>Acceder</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+    <ion-item-sliding >
+      <ion-item>
+        <ion-icon aria-hidden="true" name="layers" slot="start"></ion-icon>
+        Sobre SplitChores
+      </ion-item>
+
+      <ion-item-options >
+        <ion-item-option>Leer</ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-button id="cerrar-sesion"  color="medium" expand="block" (click)="triggerActionSheet('salir')">
+    Cerrar Sesión
+    <ion-icon slot="end" name="exit"></ion-icon>
+  </ion-button>
+  <ion-button id="eliminar-cuenta" color="danger" expand="block" (click)="triggerActionSheet('borrar')">
+    Eliminar Cuenta
+    <ion-icon slot="end" name="trash"></ion-icon>
+  </ion-button>
+  <ion-action-sheet #deleteActionSheet  header="¿Deseas elimiar tu cuenta?" mode="ios" [buttons]="deleteDialog" ></ion-action-sheet>
+  <ion-action-sheet  header="¿Deseas cerrar la sesión?" mode="ios" [buttons]="exitDialog"></ion-action-sheet>
+
+    <ion-toast *ngIf="notificaciones"
+    [isOpen]="isToastOpen"
+    position="top"
+    positionAnchor="header"
+    [message]="mensaje"
+    duration="1000"
+    (didDismiss)="cerrarNotificacion(0)"
+    [icon]="icon"
+    [color]="color"
+    ></ion-toast>
+</ion-content>

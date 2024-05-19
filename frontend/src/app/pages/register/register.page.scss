@@ -1,0 +1,51 @@
+.sex{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+ion-radio::part(container) {
+    width: 30px;
+    height: 30px;
+  
+    border-radius: 8px;
+    margin-right: 10px;
+    border: 2px solid #7d7a7a;
+  }
+  
+  ion-radio::part(mark) {
+    background: none;
+    transition: none;
+    transform: none;
+    border-radius: 0;
+  }
+  
+  ion-radio.radio-checked::part(container) {
+    background: #15ec60;
+    border-color: transparent;
+  }
+  
+  ion-radio.radio-checked::part(mark) {
+    width: 6px;
+    height: 10px;
+  
+    border-width: 0px 2px 2px 0px;
+    border-style: solid;
+    border-color: #fff;
+  
+    transform: rotate(45deg);
+  }
+
+  .distance{
+    margin: 10px 0;
+  }
+
+  .titulo-registro{
+    margin: 8%;
+    text-align: center;
+    font-size: 120%;
+    border-radius: 50px;
+    max-width: 40%;
+    margin: 5% auto;
+  }

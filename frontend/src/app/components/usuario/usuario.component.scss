@@ -1,0 +1,46 @@
+.flexed{
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 2%;
+    padding-right: 10%;
+
+    
+    
+}
+
+.flexed2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
+
+.spaced{
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.name{
+    display: flex;
+    justify-content: center;
+}
+
+.expansor{
+    width:100%;
+}
+// .chip{
+//     margin-right: .5%;
+//     position: relative;
+//     display: flex;
+// flex-direction: column;   
+//  justify-content: center;
+//   }
+

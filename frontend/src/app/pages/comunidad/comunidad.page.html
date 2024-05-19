@@ -1,0 +1,166 @@
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h3 class="titulo">{{ nombreGrupo ? nombreGrupo : 'Grupo' }}</h3>
+  <h3 class="titulo" *ngIf="tipoGrupo!==1">Clasificación</h3>
+
+  <ion-list mode="ios" class="clasificacion" *ngIf="tipoGrupo!==1" inset="true">
+    <ion-item *ngFor="let usuario of usuariosGrupo; let i = index">
+
+     <ion-text class="posicionRanking" >{{i+1}}</ion-text>
+      <ion-text class="nombreRanking">{{usuario.nombre?.toUpperCase()}}</ion-text>
+      <ion-icon class="posicionRanking" slot="end" *ngIf="i===0" name="trophy" class="gold"></ion-icon>
+      <ion-icon class="posicionRanking" slot="end"   *ngIf="i===1" name="trophy" class="silver"></ion-icon>
+      <ion-icon class="posicionRanking" slot="end" *ngIf="i===2" name="trophy" class="bronze"></ion-icon>
+      <ion-text class="puntosRanking" slot="end">{{usuario.puntos}}</ion-text>
+
+    </ion-item>
+  </ion-list>
+
+<!--1 = no está en un grupo
+
+2 =  está en un grupo pero no es el admin
+
+3 = está en un grupo y es el admin-->
+
+<div *ngIf="subordinado===false">
+<h3 *ngIf="tipoGrupo!==1" class="titulo">Acciones</h3>
+
+
+  <ion-button *ngIf="tipoGrupo===1" expand="block" class="crear-tarea" color="success" (click)="setOpen(true,3)">CREAR GRUPO<ion-icon slot="end" name="people"></ion-icon></ion-button>
+  <ion-button *ngIf="tipoGrupo===1" expand="block" class="crear-tarea" color="success" (click)="setOpen(true,2)">UNIRSE A UN GRUPO<ion-icon slot="end" name="enter"></ion-icon></ion-button>
+
+  <ion-button *ngIf="tipoGrupo===2" id="salir-grupo-usuarios" expand="block" class="crear-tarea" color="danger" (click)="triggerActionSheet('salir-grupo-usuarios')" >SALIR DEL GRUPO<ion-icon slot="end" name="exit"></ion-icon></ion-button>
+  <ion-action-sheet  header="¿Deseas salir el grupo?" [buttons]="exitDialog" ></ion-action-sheet>
+  <ion-button *ngIf="tipoGrupo===3 || tipoGrupo===2" id="open-modal" (click)="setOpen(true,1)" expand="block" class="crear-tarea" color="success">AÑADIR AL GRUPO<ion-icon slot="end" name="person-add"></ion-icon></ion-button>
+  <ion-button *ngIf="tipoGrupo===3" routerLink="/usuario/comunidad/gestionar-grupo" expand="block" class="crear-tarea" color="medium">GESTIONAR EL GRUPO<ion-icon slot="end" name="create-outline"></ion-icon></ion-button>
+  <ion-button *ngIf="tipoGrupo===3" id="eliminar-grupo"  expand="block" class="crear-tarea" color="danger" (click)="triggerActionSheet('eliminar-grupo')">ELIMINAR EL GRUPO<ion-icon slot="end" name="trash"></ion-icon></ion-button>
+  <ion-action-sheet  header="¿Deseas eliminar el grupo?"  [buttons]="deleteDialog"></ion-action-sheet>
+  <ion-button *ngIf="tipoGrupo===3" id="salir-grupo-admin"  expand="block" class="crear-tarea" color="danger" (click)="triggerActionSheet('salir-grupo-admin')">SALIR DEL GRUPO<ion-icon slot="end" name="exit"></ion-icon></ion-button>
+  <ion-action-sheet  header="¿Deseas salir del grupo?"  [buttons]="exitDialogAdmin"></ion-action-sheet>
+
+</div>
+<h3 class="mensaje404 errormessage" *ngIf="tipoGrupo===1" >¡Crea o únete a un grupo!</h3>
+<h3 class="mensaje404 errormessage" *ngIf="subordinado===true" >¡Aquí puedes ver la clasificación!</h3>
+<img *ngIf="tipoGrupo===1 || subordinado===true" src="../../../assets/messages/penguins.png" class="error" alt="Imagen de error 404">
+
+
+  <ion-modal id="modal-meter" [isOpen]="isModalOpen" backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,1)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="modal-toolbar">
+          <ion-title>Añadir Al Grupo</ion-title>
+          <ion-buttons slot="end" class="close-button">
+            <ion-button (click)="setOpen(false,1)" color="primary">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p class="instrucciones">
+          1-En el teléfono de la persona que quiere entrar al grupo ve a
+        </p>
+        <br>
+        <p class="instrucciones">
+        [Grupo] -> [Unirse a un Grupo].
+        </p>
+        <br>
+        <p class="instrucciones">
+          2-Muestrale este código e introdúcelo.
+        </p>
+        <br>
+        <p class="instrucciones">
+          3-No cierres esta ventana hasta que tu compañero haya entrado al grupo.
+      </p>
+        <p class="codigo-grupo">
+            {{codigo}}
+        </p>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal id="modal-unirse" [isOpen]="isModalTypeOpen" backdropDismiss="false"  [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,2)">
+    <ng-template>
+      <ion-header >
+        <ion-toolbar class="modal-toolbar">
+          <ion-title>Unirse a un Grupo</ion-title>
+          <ion-buttons slot="end" class="close-button">
+            <ion-button (click)="setOpen(false,2)" color="primary">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding " overflow-scroll="false">
+        <p class="instrucciones">
+          1-En el teléfono de la persona miembro del grupo ve a:
+        </p>
+        <br>
+        <p class="instrucciones">
+        [Grupo] -> [Añadir al grupo].
+        </p>
+        <br>
+        <p class="instrucciones">
+          2-Introduce aquí el código que aparece.
+        </p>
+        <br>
+        <p class="instrucciones">
+          3-No cierres esta ventana hasta que hayas introducido el código y se complete el proceso.
+      </p>
+        <ion-card-content overflow-scroll="false">
+          <form [formGroup]="groupForm">
+       
+          
+            <ion-item lines="none" class="code-input" >
+                <!-- <ion-label position="floating">Código</ion-label> -->
+                <ion-input  label="Código" label-placement="floating" type="text"  formControlName="codigo"  required ></ion-input>
+              </ion-item>
+          
+              
+    
+              <ion-button expand="block" type="submit"  color="success" (click)="unirseGrupo()">Terminar</ion-button>
+          
+            </form>
+    
+          
+        </ion-card-content>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <ion-modal id="modal-crear" [isOpen]="isModalCreateOpen" backdropDismiss="false" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (ionModalDidDismiss)="setOpen(false,3)"> 
+    <ng-template>
+      <ion-header >
+        <ion-toolbar class="modal-toolbar">
+          <ion-title>Crear un Grupo</ion-title>
+          <ion-buttons slot="end" class="close-button">
+            <ion-button (click)="setOpen(false,3)" color="primary">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding" overflow-scroll="false">
+        <ion-card-content overflow-scroll="false">
+          <form [formGroup]="createGroupForm">
+       
+          
+            <ion-item lines="none" class="code-input" >
+                <ion-input label="Nombre" label-placement="floating" type="text"  formControlName="nombre" maxlength=20 required></ion-input>
+
+              </ion-item>
+              <ion-button expand="block" type="submit"  color="success" (click)="crearGrupo()">Terminar</ion-button>
+
+            </form>
+    
+          
+        </ion-card-content>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <app-cambiar-admin></app-cambiar-admin>
+
+
+  <h3 class="mensaje404" *ngIf="tipoGrupo===1 && subordinado===true" >La persona a tu cargo no está en un grupo :(</h3>
+ 
+</ion-content>

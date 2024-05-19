@@ -1,0 +1,7 @@
+{
+  "name": "SplitChores",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,82 @@
+<swiper-container [initialSlide]=1 class="slide-margin">
+
+
+  <swiper-slide >
+    <!--  contenido de la card -->
+  <ion-card class="card">
+    <div class="left-border" [style.borderLeftColor]="colorVariable">
+   <!-- modal de descripcion -->
+    <ion-modal [isOpen]="isModalOpen"  backdropDismiss="false" (ionModalDidDismiss)="setOpen(false)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar class="modal-toolbar">
+            <ion-title>Descripción</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)" color="primary">Cerrar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding transparente">
+          <p>
+            {{tarea.descripcion}}
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    <!--  contenido dentro de la tarjeta -->
+    <ion-item class="card-item" >
+    <p class="tipo">{{tarea.nombre}}</p>
+
+    <ion-icon slot="end" name="information-circle" id="open-modal" (click)="setOpen(true)" slot="end"  class="info" ></ion-icon>
+    </ion-item>
+
+
+
+    <ion-item class="card-item " lines="none">
+       <ion-chip slot="start" class="raleway chip" *ngIf="!sinElegir && usuarioChip">
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" [src]="usuario.avatar ? usuario.avatar : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+        </ion-avatar>
+        <ion-text class="raleway" >{{usuario.nombre }}</ion-text>
+      </ion-chip> 
+
+      <ion-button slot="start" class="raleway chip" color="success" (click)="escogerTarea()"  *ngIf="sinElegir && !usuarioChip ">
+            Escoger
+      </ion-button>
+      <ion-button  slot="start" class="raleway chip" color="danger" (click)="liberarTarea()" style="margin-right: 6px;" *ngIf="!sinElegir && !usuarioChip && tarea.recurrente===false && subordinado===false">
+            Quitar
+      </ion-button>
+      <ion-button slot="start" class="raleway chip" color="success" (click)="completarTarea()"  *ngIf="!sinElegir && !usuarioChip">
+           <ion-icon name="checkmark-done"></ion-icon>
+      </ion-button>
+
+    <ion-text  slot="end" class="points status-container" color="success" *ngIf="!usuarioChip && tarea.dificultad==='media'"><ion-icon name="happy-outline"  expand="block" color="success" ></ion-icon>+100</ion-text>
+    <ion-text  slot="end" class="points status-container" color="success" *ngIf="!usuarioChip && tarea.dificultad==='facil'"><ion-icon name="happy-outline"  expand="block" color="success" ></ion-icon>+50</ion-text>
+    <ion-text  slot="end" class="points status-container" color="success" *ngIf="!usuarioChip && tarea.dificultad==='dificil'"><ion-icon name="happy-outline"  expand="block" color="success" ></ion-icon>+200</ion-text>
+    <ion-text  slot="end" class="points status-container" color="danger" *ngIf="usuarioChip && tarea.fallida===true"><ion-icon name="sad-outline"  expand="block" color="danger" ></ion-icon><ion-icon name="close"  expand="block" color="danger" ></ion-icon></ion-text>
+    <ion-text  slot="end" class="points status-container" color="success" *ngIf="usuarioChip && tarea.fallida===false"><ion-icon name="happy-outline"  expand="block" color="success" ></ion-icon><ion-icon name="checkmark-done"  expand="block" color="success" ></ion-icon></ion-text>
+    <ion-text  slot="end" class="fecha-container"> <ion-icon name="calendar" class="icono-barra"></ion-icon> <span class="texto-fecha">{{ tarea.fechaLimite }}</span></ion-text>
+    <ion-text  class="points" slot="start" *ngIf="tarea.recurrente===true && !usuarioChip"><ion-icon name="repeat" class="recurrente"></ion-icon></ion-text>
+    </ion-item>
+
+
+  </div>
+  </ion-card>
+</swiper-slide >
+<swiper-slide *ngIf="!usuarioChip && subordinado===false">
+  <div class="flexed">
+  <ion-card   [button]="true" class="card eliminar editar" color="medium" (click)="aEditar()">
+    <ion-icon name="pencil" class="texto-boton"></ion-icon><ion-label class="texto-boton">EDITAR</ion-label>
+  </ion-card>
+  <ion-card id="open-action-sheet-eliminar{{tarea.uid}}" class="card eliminar " color="danger" [button]="true">
+    <ion-icon name="trash" class="texto-boton"></ion-icon>
+    <ion-text class="texto-boton">BORRAR</ion-text>
+  </ion-card>
+  <ion-action-sheet trigger="open-action-sheet-eliminar{{tarea.uid}}" header="¿Deseas borrar la tarea?" mode="ios" [buttons]="deleteDialog" (ionActionSheetDidDismiss)="onActionSheetDismiss($event)"></ion-action-sheet>
+
+</div>
+
+  <!-- fin contenido de la card -->
+</swiper-slide>
+
+</swiper-container>

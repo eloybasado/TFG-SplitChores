@@ -1,0 +1,160 @@
+
+
+  .tipo{
+    font-size: 120%;
+     margin-left: .5%;
+    text-align: center;
+    // color: white;
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    
+  }
+
+  .chip{
+    margin-right: .5%;
+
+  }
+
+
+
+
+  .card{
+    //  background-color:rgb(210, 204, 204) ;
+    border-radius: 35px;
+    // margin: 4%;
+    font-size: 10px;
+    justify-content: center;
+
+     box-shadow: 1px 1px 7px 1px rgba(161, 161, 151, 0.729);
+  }
+  
+  ion-item::part(native) {
+    // background: rgb(47, 45, 45);
+    // color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+
+  }
+
+  
+  
+  .info{
+     color: rgb(132, 127, 127); 
+    font-size: 140%;
+
+  }
+  .points{
+    font-size: 95%;
+    margin:0px
+    
+  }
+
+  .recurrente{
+    color: rgb(120, 173, 207);
+    font-size: 120%;
+  }
+
+
+
+
+  .eliminar{
+    // background: linear-gradient(to right, #a95969, #d24776);
+    border-radius: 25px;
+    color: #fff;
+    padding: 5px 15px;
+    height: 98px;
+    // box-shadow: 1px 1px 30px 1px rgba(197, 26, 66, 0.67);
+    display: flex;
+  }
+
+  .editar{
+    // background: linear-gradient(to right, #3f403f, #3a3a3a);
+    // box-shadow: 1px 1px 30px 1px rgba(127, 130, 128, 0.67);
+
+
+  }
+
+  .texto-boton{
+    text-align: center;
+    align-items: center;
+    font-size: 23px;
+    justify-content: center;
+
+  }
+
+
+  .fecha-container {
+    display: flex;
+    align-items: center;
+    font-size: 85%;
+    margin-left: 5px;
+  }
+
+  .status-container {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+  }
+  
+  .icono-barra {
+    margin-right: 5px;
+  }
+  
+  .texto-fecha {
+    display: inline-block;
+  }
+  
+  .flexed{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+  .flexedcard{
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+  }
+
+
+  ion-action-sheet.my-custom-class {
+    // --background: #f58840;
+    // --backdrop-opacity: 0.6;
+    // --background: rgba(33, 31, 31, 0.189);
+    // -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+    // backdrop-filter: saturate(180%) blur(20px) !important;
+  
+    // --button-background-selected: #e97223;
+    // --button-color: #000000;
+    // --color: #fff;
+    /* role: "destructive" button iOS styling override */
+    // --ion-color-danger: #000000;
+  }
+  
+
+  ion-modal {
+    font-size: x-large;
+    --height: 50%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  ion-modal::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+  }
+  
+
+  .left-border {
+    border-left: 30px solid; /* Color sólido de la franja vertical */
+   padding-right: 0;
+  }
+
+
+
+  p{
+    margin: 0px;
+  }

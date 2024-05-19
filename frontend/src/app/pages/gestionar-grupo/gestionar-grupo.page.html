@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+<div class="flexed">
+  <ion-back-button class="elemento2" defaultHref="/usuario/comunidad"></ion-back-button>
+  <h3 class="titulo titulo-especial">Gestionar</h3>
+</div>
+
+
+<ion-list *ngFor="let usuario of usuarios" >
+  <ion-item-sliding *ngIf="usuario.uid !== this.userId">
+    <ion-item [button]="true" detail="true">
+      <ion-avatar aria-hidden="true" slot="start">
+        <img alt="Silhouette of a person's head" [src]="usuario.avatar ? usuario.avatar : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />s
+      </ion-avatar>
+      <ion-label>{{usuario.nombre}}</ion-label>
+    </ion-item>
+    <ion-item-options slot="end">
+      <ion-item-option color="tertiary" (click)="enviarNotificacion(usuario.uid)">
+        <ion-icon slot="icon-only" name="notifications"></ion-icon>
+      </ion-item-option>
+      <ion-item-option *ngIf="usuario.rol!=='SUBORDINADO'" id="echar-grupo{{usuario.uid}}" color="danger" >
+        <ion-icon slot="icon-only" name="exit" ></ion-icon>
+      </ion-item-option>
+      <ion-action-sheet trigger="echar-grupo{{usuario.uid}}" header="¿Deseas echar a {{usuario.nombre}}?" mode="ios" [buttons]="fireDialog" (ionActionSheetDidDismiss)="onActionSheetDismiss($event,usuario.uid)"></ion-action-sheet>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
+
+<!-- <div *ngFor="let usuario of usuarios"  class="gestor-botones">
+  <app-usuario  *ngIf="usuario.uid !== this.userId" [usuario]="usuario" (eventoHijo)="echarDelGrupo($event)"></app-usuario>
+</div>     -->
+<ion-button  class="gestor-botones" expand="block" color="medium" (click)="resetearPuntos()">Resetear Puntos Ranking<ion-icon slot="end" name="refresh-circle"></ion-icon></ion-button>
+<ion-button class="gestor-botones" expand="block" color="primary" (click)="openCambiarAdmin()">Cambiar Admin del Grupo<ion-icon slot="end" name="person"></ion-icon></ion-button>
+
+<app-cambiar-admin></app-cambiar-admin>
+</ion-content>

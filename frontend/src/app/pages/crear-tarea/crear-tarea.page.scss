@@ -1,0 +1,103 @@
+
+
+ion-item.custom {
+
+  // --background:rgba(100, 94, 94, 0.788);
+--border-radius: 10px;  
+  }
+
+  ion-item.nobg {
+
+    // --background:rgba(100, 94, 94, 0);
+  --border-radius: 10px;  
+    }
+
+ion-select.custom{
+    // --background:rgba(100, 94, 94, 0.788);
+    color: white;
+}
+
+
+
+.frecuencia{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 20%;
+}
+
+.boton-dias{
+  margin: 10px 20px;
+}
+
+.rotacion{
+
+  background: none;
+  display: flex;
+  justify-content: center;
+}
+
+.frecuenciaInput{
+    --background:none;
+  // color: white;
+
+
+}
+
+.borderbottom{
+  border-bottom: 1px solid grey;
+
+}
+
+
+.distance{
+  margin: 10px 0;
+}
+
+.tarea-form{
+  padding: 0 15px;
+}
+
+// ion-card.custom{
+  
+
+// }
+
+
+
+ion-segment-button{
+  --width: 5px;
+}
+
+ion-segment-button{
+  min-width: auto;
+}
+
+.day-button{
+  --border-radius: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.reorder-item{
+  border-radius: 20px;
+}
+
+.contenedor {
+  display: flex;
+}
+
+.rotacion.apaisado {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.elemento {
+  display: flex;
+  margin-right: 10px; /* Espacio entre elementos */
+}
+
+
+.animated{
+  transition: transform 0.2s ease;
+}
